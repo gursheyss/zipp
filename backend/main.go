@@ -52,5 +52,8 @@ func startServer() {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
-	http.ListenAndServe(os.Getenv("PORT"), r)
+	err := http.ListenAndServe(os.Getenv("PORT"), r)
+	if err != nil {
+		log.Fatalf("Server failed %v", err)
+	}
 }
