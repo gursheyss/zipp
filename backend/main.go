@@ -8,11 +8,17 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found")
+	}
+
 	client := connectToMongoDB()
 	defer disconnectFromMongoDB(client)
 	startServer()
