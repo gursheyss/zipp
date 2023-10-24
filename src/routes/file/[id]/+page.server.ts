@@ -13,18 +13,18 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-    download: async ({ params, request }) => {
-        const form = await request.formData();
-        const password = form.get('password') as string;
-        const id = params.id;
-        const response = await fetch(API_URL + `/download?id=${id}&password=${password}`, {
-            method: 'GET'
-        });
+	download: async ({ params, request }) => {
+		const form = await request.formData();
+		const password = form.get('password') as string;
+		const id = params.id;
+		const response = await fetch(API_URL + `/download?id=${id}&password=${password}`, {
+			method: 'GET'
+		});
 
-        const decryptedFiles = await response.json();
-        return {
-            decryptedFiles,
-            id: id
-        };
-    }
+		const decryptedFiles = await response.json();
+		return {
+			decryptedFiles,
+			id: id
+		};
+	}
 };
