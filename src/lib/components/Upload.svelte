@@ -57,7 +57,7 @@
 	use:enhance={() => {
 		return async ({ update }) => {
 			files = null;
-			update({ reset: true });
+			update({ reset: false });
 		};
 	}}
 	on:drop={handleDrop}
@@ -76,7 +76,7 @@
 				<span class="ml-2 text-pink flex flex-row items-center">
 					<Paperclip class="w-4 h-4 mr-1" />
 					{fileName}
-					<button class="flex items-center pl-1 justify-center" on:click={clearFiles}>
+					<button type="button" class="flex items-center pl-1 justify-center" on:click={clearFiles}>
 						<X class="w-3 h-3" color="#808080" />
 					</button>
 				</span>
@@ -93,7 +93,9 @@
 </form>
 <button
 	form="uploadform"
-	class={`mt-2 w-full font-medium hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow ${!fileName ? 'bg-slate-200' : 'bg-white'}`}
+	class={`mt-2 w-full font-medium hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow ${
+		!fileName ? 'bg-slate-200' : 'bg-white'
+	}`}
 	type="submit"
 	disabled={!fileName}>share</button
 >

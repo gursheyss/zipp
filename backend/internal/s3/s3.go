@@ -1,6 +1,7 @@
 package s3
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"log"
@@ -32,10 +33,11 @@ func ConnectToAWS(ctx context.Context) (*s3.Client, error) {
 	return client, nil
 }
 
-func UploadFile(ctx context.Context, client *s3.Client, file io.Reader, bucket, key string) (string, error) {
+func UploadFile(ctx context.Context, client *s3.Client, file io.Reader, bucket, key string, id string) (string, error) {
+	fullKey := id + "/" + key
 	_, err := client.PutObject(ctx, &s3.PutObjectInput{
 		Bucket:               aws.String(bucket),
-		Key:                  aws.String(key),
+		Key:                  aws.String(fullKey),
 		Body:                 file,
 		ServerSideEncryption: types.ServerSideEncryptionAes256,
 	})
@@ -45,5 +47,44 @@ func UploadFile(ctx context.Context, client *s3.Client, file io.Reader, bucket, 
 	}
 
 	log.Println("File uploaded successfully")
-	return key, nil
+	return fullKey, nil
+}
+
+func DownloadAllFiles(ctx context.Context, client *s3.Client, bucket, id string) (map[string][]byte, error) {
+	input := &s3.ListObjectsV2Input{
+		Bucket: aws.String(bucket),
+		Prefix: aws.String(id + "/"),
+	}
+
+	resp, err := client.ListObjectsV2(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+
+	files := make(map[string][]byte)
+	for _, item := range resp.Contents {
+		getObjInput := &s3.GetObjectInput{
+			Bucket: aws.String(bucket),
+			Key:    item.Key,
+		}
+
+		getObjResp, err := client.GetObject(ctx, getObjInput)
+		if err != nil {
+			return nil, err
+		}
+
+		defer getObjResp.Body.Close()
+
+		buf := new(bytes.Buffer)
+		_, err = io.Copy(buf, getObjResp.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		files[*item.Key] = buf.Bytes()
+	}
+
+	log.Println("All files downloaded successfully")
+
+	return files, nil
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 
 	"zipp/internal/database"
@@ -16,8 +15,11 @@ func main() {
 		log.Println("No .env file found")
 	}
 
-	ctx := context.Background()
-	client := database.ConnectToMongoDB(ctx)
-	defer database.DisconnectFromMongoDB(ctx, client)
-	server.StartServer()
+	db, err := database.ConnectToMySQL()
+	if err != nil {
+		log.Fatalf("Failed to connect to MySQL: %v", err)
+	}
+	defer db.Close()
+
+	server.StartServer(db)
 }
