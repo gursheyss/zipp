@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { Paperclip, Upload, X } from 'lucide-svelte';
 	import { fade } from 'svelte/transition';
 
@@ -47,16 +48,24 @@
 	$: fileName;
 </script>
 
-<div
+<form
+	id="uploadform"
+	action="?/upload"
+	method="POST"
 	class="flex items-center justify-center w-full h-64 border-2 border-darkpink border-dashed rounded-md relative z-0"
 	on:dragover={handleDragOver}
+	use:enhance={() => {
+		return async ({ update }) => {
+			files = null;
+			update({ reset: true });
+		};
+	}}
 	on:drop={handleDrop}
-	role="button"
-	tabindex="0"
+	on:submit={clearFiles}
 >
 	<div class="flex items-center justify-center absolute inset-0">
 		<div class="flex items-center justify-center absolute inset-0">
-			<Upload color="pink" class="w-5 h-5"/>
+			<Upload color="pink" class="w-5 h-5" />
 			<span class="ml-2 text-pink">upload or drag here</span>
 		</div>
 		{#if fileName}
@@ -74,16 +83,26 @@
 			</div>
 		{/if}
 		<input
+			id="file-upload"
+			name="file-upload"
 			type="file"
-			bind:files
 			on:change={handleFileSelection}
 			class="w-full h-full opacity-0 cursor-pointer"
 		/>
 	</div>
-</div>
+</form>
 <button
-	class="mt-2 w-full font-medium bg-white hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow {fileName
-		? ''
-		: 'bg-slate-300'}"
+	form="uploadform"
+	class={`mt-2 w-full font-medium hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow ${!fileName ? 'bg-slate-200' : 'bg-white'}`}
+	type="submit"
 	disabled={!fileName}>share</button
 >
+<input
+	form="uploadform"
+	id="password"
+	name="password"
+	class="text-center mt-2 w-full font-medium bg-white hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow"
+	placeholder="password (optional)"
+	autocomplete="false"
+	disabled={!fileName}
+/>
