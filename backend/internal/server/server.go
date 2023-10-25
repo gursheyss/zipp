@@ -4,13 +4,14 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
-	"os"
+	"zipp/internal/tools"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
 func StartServer(db *sql.DB) {
+	port := tools.EnvPortOr("3000")
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Get("/", handleRoot)
@@ -23,7 +24,7 @@ func StartServer(db *sql.DB) {
 	r.Get("/check", func(w http.ResponseWriter, r *http.Request) {
 		handleCheck(w, r, db)
 	})
-	err := http.ListenAndServe(os.Getenv("PORT"), r)
+	err := http.ListenAndServe(port, r)
 	if err != nil {
 		log.Fatalf("Server failed %v", err)
 	}
