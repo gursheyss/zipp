@@ -2,7 +2,9 @@
 	import { enhance } from '$app/forms';
 	import { Paperclip, Upload, X } from 'lucide-svelte';
 	import { fade } from 'svelte/transition';
+	import Loading from './Loading.svelte';
 
+	let isLoading = false;
 	let files: FileList | null = null;
 	let fileName = '';
 
@@ -45,6 +47,11 @@
 		fileName = '';
 	}
 
+	function handleSubmit() {
+		clearFiles();
+		isLoading = true;
+	}
+
 	$: fileName;
 </script>
 
@@ -61,7 +68,7 @@
 		};
 	}}
 	on:drop={handleDrop}
-	on:submit={clearFiles}
+	on:submit={handleSubmit}
 >
 	<div class="flex items-center justify-center absolute inset-0">
 		<div class="flex items-center justify-center absolute inset-0">
@@ -97,8 +104,17 @@
 		!fileName ? 'bg-slate-200' : 'bg-white'
 	}`}
 	type="submit"
-	disabled={!fileName}>share</button
+	disabled={!fileName}
 >
+	<span class="flex justify-center items-center">
+		share
+		{#if isLoading}
+			<div class="pl-2">
+				<Loading />
+			</div>
+		{/if}
+	</span>
+</button>
 <input
 	form="uploadform"
 	id="password"

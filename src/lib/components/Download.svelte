@@ -40,6 +40,7 @@
 				class="text-center mt-2 w-full font-medium bg-white hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow"
 				placeholder="password"
 				autocomplete="false"
+				type="password"
 				bind:value={password}
 			/>
 			<button
