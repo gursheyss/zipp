@@ -4,12 +4,15 @@
 	let password: string;
 	$: password;
 
+	let invalidPassword = false;
+	$: invalidPassword;
+
 	const download = async () => {
 		const response = await fetch(`/api/download?id=${data.id}&password=${password}`);
 		if (!response.ok) {
-			const error = await response.text(); // or response.json() if the error is a JSON object
-			console.log(error);
+			invalidPassword = true;
 		} else {
+			invalidPassword = false;
 			const blob = await response.blob();
 			const contentDisposition = response.headers.get('Content-Disposition');
 			const filenameMatch = contentDisposition
@@ -47,6 +50,9 @@
 			>
 		</div>
 	</div>
+	{#if invalidPassword}
+		<p class="text-pink">invalid password</p>
+	{/if}
 {:else}
 	<div class="flex flex-col justify-center items-center h-screen m-auto gap-2 sm:w-[34rem] px-4">
 		<h1 class="text-2xl font-obviouslywide font-bold mb-4 text-pink">file not found :(</h1>
