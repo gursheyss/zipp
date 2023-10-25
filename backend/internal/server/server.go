@@ -23,7 +23,7 @@ func StartServer(db *sql.DB) {
 	r.Get("/check", func(w http.ResponseWriter, r *http.Request) {
 		handleCheck(w, r, db)
 	})
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), r)
+	err := http.ListenAndServe(os.Getenv("PORT"), r)
 	if err != nil {
 		log.Fatalf("Server failed %v", err)
 	}
