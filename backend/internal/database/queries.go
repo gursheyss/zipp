@@ -2,10 +2,9 @@ package database
 
 import (
 	"database/sql"
+	"encoding/hex"
+	"fmt"
 	"log"
-	"os"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type File struct {
@@ -14,25 +13,12 @@ type File struct {
 	Salt  []byte
 }
 
-func ConnectToMySQL() (*sql.DB, error) {
-	db, err := sql.Open("mysql", os.Getenv("DSN"))
-	if err != nil {
-		log.Fatalf("failed to connect: %v", err)
-		return nil, err
-	}
-
-	if err := db.Ping(); err != nil {
-		log.Fatalf("failed to ping: %v", err)
-		return nil, err
-	}
-
-	log.Println("Successfully connected to PlanetScale!")
-	return db, nil
-}
-
 func UploadToDB(db *sql.DB, id string, nonce []byte, salt []byte) error {
+	fmt.Println("ID: ", id)
+	fmt.Println("Nonce: ", hex.EncodeToString(nonce))
+	fmt.Println("Salt: ", hex.EncodeToString(salt))
 	query := `INSERT INTO files (id, nonce, salt) VALUES (?, ?, ?)`
-	_, err := db.Exec(query, id, nonce, salt)
+	_, err := db.Exec(query, id, hex.EncodeToString(nonce), hex.EncodeToString(salt))
 	if err != nil {
 		log.Fatalf("Failed to insert data: %v", err)
 		return err
