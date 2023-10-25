@@ -18,7 +18,7 @@ export const GET: RequestHandler = async ({ request }) => {
         if (contentDisposition === null) {
             return new Response('Error fetching file headers', { status: 500 });
         }
-        console.log(contentDisposition)
+        console.log(contentDisposition);
         const headers = {
             'Content-Disposition': contentDisposition,
             'Content-Type': blob.type

@@ -8,10 +8,12 @@ export const actions = {
 			const form = await request.formData();
 			const file = form.get('file-upload') as File;
 			let password = form.get('password') as string;
+			let gennedPassword = false;
 
 			// generate random pass if its not provided
 			if (!password) {
-				password = randomBytes(32).toString('hex');
+				password = randomBytes(16).toString('hex');
+				gennedPassword = true;
 			}
 
 			// generate unique id for file
@@ -32,16 +34,10 @@ export const actions = {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 
-			const responseData = await response.json();
-			console.log(responseData);
-
-			if (!form.get('password')) {
-				responseData.password = password;
-			}
-
-			responseData.fileURL = `file/${id}`;
-
-			return responseData;
+			return {
+				fileURL: `/file/${id}`,
+				...(gennedPassword ? { password: `${password}` } : {})
+			};
 		} catch (error) {
 			console.error('An error occurred:', error);
 			throw error;

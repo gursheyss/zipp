@@ -103,8 +103,8 @@
 	form="uploadform"
 	id="password"
 	name="password"
+	type="password"
 	class="text-center mt-2 w-full font-medium bg-white hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow"
 	placeholder="password (optional)"
-	autocomplete="false"
 	disabled={!fileName}
 />
