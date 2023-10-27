@@ -22,12 +22,38 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 
 func handleCheck(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	id := r.URL.Query().Get("id")
-	exists, err := database.CheckIfExists(db, id)
+	exists, err := database.CheckIfExistsDB(db, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Write([]byte(strconv.FormatBool(exists)))
+}
+
+func handleDelete(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	id := r.URL.Query().Get("id")
+
+	ctx := context.Background()
+	client, err := s3.ConnectToAWS(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = s3.DeleteFile(ctx, client, "zipp-files", id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = database.DeleteFileDB(db, id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("File deleted successfully"))
 }
 
 func handleDownload(w http.ResponseWriter, r *http.Request, db *sql.DB) {

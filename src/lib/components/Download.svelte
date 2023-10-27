@@ -9,6 +9,7 @@
 
 	import Loading from './Loading.svelte';
 	let isLoading = false;
+	let success = false;
 
 	const download = async () => {
 		isLoading = true;
@@ -18,6 +19,7 @@
 			isLoading = false;
 		} else {
 			invalidPassword = false;
+			success = true;
 			const blob = await response.blob();
 			const contentDisposition = response.headers.get('Content-Disposition');
 			const filenameMatch = contentDisposition
@@ -66,6 +68,9 @@
 	<div class="h-5 text-pink">
 		{#if invalidPassword}
 			<p>invalid password</p>
+		{/if}
+		{#if success}
+			<p>your files have been downloaded & deleted from our servers</p>
 		{/if}
 	</div>
 {:else}

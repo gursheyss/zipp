@@ -23,6 +23,15 @@ export const GET: RequestHandler = async ({ request }) => {
 			'Content-Disposition': contentDisposition,
 			'Content-Type': blob.type
 		};
+
+		const deleteResponse = await fetch(`${API_URL}/delete?id=${id}`, {
+			method: 'DELETE'
+		});
+
+		if (!deleteResponse.ok) {
+			console.log('Error deleting file');
+		}
+
 		return new Response(blob, { status: 200, headers });
 	}
 };

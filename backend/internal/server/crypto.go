@@ -48,7 +48,7 @@ func encryptFile(file multipart.File, password string) ([]byte, []byte, []byte, 
 }
 
 func decryptFile(unencryptedFile []byte, db *sql.DB, id string, password string) ([]byte, error) {
-	fileInfo, err := database.GetFileInfo(db, id, password)
+	fileInfo, err := database.GetFileInfoDB(db, id, password)
 	if err != nil {
 		return nil, err
 	}

@@ -31,6 +31,36 @@ func UploadFile(ctx context.Context, client *s3.Client, file io.Reader, bucket, 
 	return fullKey, nil
 }
 
+func DeleteFile(ctx context.Context, client *s3.Client, bucket, id string) error {
+	fullKey := id + "/"
+
+	input := &s3.ListObjectsV2Input{
+		Bucket: aws.String(bucket),
+		Prefix: aws.String(fullKey),
+	}
+
+	resp, err := client.ListObjectsV2(ctx, input)
+	if err != nil {
+		log.Printf("Failed to list files: %v", err)
+		return err
+	}
+
+	for _, item := range resp.Contents {
+		_, err := client.DeleteObject(ctx, &s3.DeleteObjectInput{
+			Bucket: aws.String(bucket),
+			Key:    item.Key,
+		})
+
+		if err != nil {
+			log.Printf("Failed to delete file %s: %v", *item.Key, err)
+			return err
+		}
+	}
+
+	log.Println("Files deleted successfully")
+	return nil
+}
+
 func DownloadFile(ctx context.Context, client *s3.Client, bucket, id string) ([]byte, string, error) {
 	input := &s3.ListObjectsV2Input{
 		Bucket: aws.String(bucket),

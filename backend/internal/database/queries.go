@@ -27,7 +27,7 @@ func UploadToDB(db *sql.DB, id string, nonce []byte, salt []byte) error {
 	return nil
 }
 
-func CheckIfExists(db *sql.DB, id string) (bool, error) {
+func CheckIfExistsDB(db *sql.DB, id string) (bool, error) {
 	query := `SELECT EXISTS(SELECT 1 FROM files WHERE id=?)`
 	var exists bool
 	err := db.QueryRow(query, id).Scan(&exists)
@@ -38,7 +38,7 @@ func CheckIfExists(db *sql.DB, id string) (bool, error) {
 	return exists, nil
 }
 
-func GetFileInfo(db *sql.DB, id string, password string) (*File, error) {
+func GetFileInfoDB(db *sql.DB, id string, password string) (*File, error) {
 	query := `SELECT id, nonce, salt FROM files WHERE id=?`
 	row := db.QueryRow(query, id)
 
@@ -53,4 +53,15 @@ func GetFileInfo(db *sql.DB, id string, password string) (*File, error) {
 		}
 	}
 	return &file, nil
+}
+
+func DeleteFileDB(db *sql.DB, id string) error {
+	query := `DELETE FROM files WHERE id=?`
+	_, err := db.Exec(query, id)
+	if err != nil {
+		log.Fatalf("Failed to delete data: %v", err)
+		return err
+	}
+	log.Println("Data successfully deleted!")
+	return nil
 }

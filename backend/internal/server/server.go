@@ -24,6 +24,9 @@ func StartServer(db *sql.DB) {
 	r.Get("/check", func(w http.ResponseWriter, r *http.Request) {
 		handleCheck(w, r, db)
 	})
+	r.Delete("/delete", func(w http.ResponseWriter, r *http.Request) {
+		handleDelete(w, r, db)
+	})
 	err := http.ListenAndServe(port, r)
 	if err != nil {
 		log.Fatalf("Server failed %v", err)
