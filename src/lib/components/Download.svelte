@@ -70,7 +70,7 @@
 			<p>invalid password</p>
 		{/if}
 		{#if success}
-			<p>your files have been downloaded & deleted from our servers</p>
+			<p>your files have been downloaded & deleted</p>
 		{/if}
 	</div>
 {:else}
