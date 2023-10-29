@@ -28,16 +28,16 @@
 		}
 	}
 
+	const MAX_SIZE_MB = 100;
+	const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+
 	function checkFileSize(fileList: FileList): FileList | null {
-		const MAX_SIZE_MB = 100;
-		const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 		if (fileList[0].size > MAX_SIZE_BYTES) {
 			alert('File size exceeds 100MB limit');
 			return null;
 		}
 		return fileList;
 	}
-
 	function getFileName(files: FileList | null): string {
 		return files && files.length > 0 ? files[0].name : '';
 	}
@@ -59,7 +59,7 @@
 	id="uploadform"
 	action="?/upload"
 	method="POST"
-	class="flex items-center justify-center w-full h-64 border-2 border-darkpink border-dashed rounded-md relative z-0"
+	class="flex items-center justify-center w-full h-64 border-2 border-darkpink border-dashed rounded-md relative z-0 hover:border-pink"
 	on:dragover={handleDragOver}
 	use:enhance={() => {
 		return async ({ update }) => {
