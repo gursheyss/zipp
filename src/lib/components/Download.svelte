@@ -12,6 +12,7 @@
 	let success = false;
 
 	const download = async () => {
+		success = false;
 		isLoading = true;
 		const response = await fetch(`/api/download?id=${data.id}&password=${password}`);
 		if (!response.ok) {

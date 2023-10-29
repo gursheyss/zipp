@@ -98,6 +98,15 @@
 		/>
 	</div>
 </form>
+<input
+	form="uploadform"
+	id="password"
+	name="password"
+	type="password"
+	class="text-center mt-2 w-full font-medium bg-white hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow"
+	placeholder="password (optional)"
+	disabled={!fileName}
+/>
 <button
 	form="uploadform"
 	class={`mt-2 w-full font-medium hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow ${
@@ -115,12 +124,3 @@
 		{/if}
 	</span>
 </button>
-<input
-	form="uploadform"
-	id="password"
-	name="password"
-	type="password"
-	class="text-center mt-2 w-full font-medium bg-white hover:bg-opacity-95 transition rounded-[6px] depth-white py-2 box-shadow"
-	placeholder="password (optional)"
-	disabled={!fileName}
-/>
