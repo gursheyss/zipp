@@ -9,8 +9,9 @@
 - File encrypted using AES and PBKDF2, then uploaded to S3 with ID.
 - ID, nonce, and password salt stored in MySQL database.
 - A link containing the unique ID is returned to the user for access.
+
 ### Diagram
-[![File Upload](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd/preview?elements=9rWSIsSbwoWs-0VMYQYBwQ&type=embed)](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd?elements=9rWSIsSbwoWs-0VMYQYBwQ)
+![diagram-export-11-7-2023-12_27_04-PM](https://github.com/gursheyss/zipp/assets/116788218/224873d8-9773-4ee7-8a73-739654465c31)
 
 ### File Download
 - Access the file via a link with a unique ID.
@@ -20,8 +21,7 @@
 - Post-download, the file's record is deleted from both MySQL database and S3 storage. 
 
 ### Diagram
-[![File Download](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd/preview?elements=es5yt7geSqpiH4TxXDWhrg&type=embed)](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd?elements=es5yt7geSqpiH4TxXDWhrg)
+![diagram-export-11-7-2023-12_26_31-PM](https://github.com/gursheyss/zipp/assets/116788218/9b1fe1fc-4202-424f-9d09-383e4a8ea9f9)
 
 ## License
 Zipp is free software: you can redistribute it and/or modify it under the terms of the MIT Public License.
-
