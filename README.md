@@ -9,6 +9,7 @@
 - File encrypted using AES and PBKDF2, then uploaded to S3 with ID.
 - ID, nonce, and password salt stored in MySQL database.
 - A link containing the unique ID is returned to the user for access.
+### Diagram
 [![File Upload](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd/preview?elements=9rWSIsSbwoWs-0VMYQYBwQ&type=embed)](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd?elements=9rWSIsSbwoWs-0VMYQYBwQ)
 
 ### File Download
@@ -17,6 +18,8 @@
 - If the password is correct, the file is downloaded from S3.
 - File is decrypted using AES and PBKDF2 and then provided to the user.
 - Post-download, the file's record is deleted from both MySQL database and S3 storage. 
+
+### Diagram
 [![File Download](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd/preview?elements=es5yt7geSqpiH4TxXDWhrg&type=embed)](https://app.eraser.io/workspace/AVKbr29QKlgqH6a7YsCd?elements=es5yt7geSqpiH4TxXDWhrg)
 
 ## License
